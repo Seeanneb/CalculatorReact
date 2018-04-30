@@ -1,0 +1,11 @@
+Create a calculator that accepts a users first number
+The user then selects an operator
+a second number is entered
+an answer is contrived between the 2 numbers selected and the operator chosen
+
+1. The body of the calculator on the screen
+2. making inputs validate as only numbers either by clicking the screen or keyboard
+3. storing the inputs into variables
+4. creating operator functions.
+5. displaying the answer on the screen. 
+6. clearing the result. 
