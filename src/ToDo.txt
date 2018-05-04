@@ -9,3 +9,11 @@ an answer is contrived between the 2 numbers selected and the operator chosen
 4. creating operator functions.
 5. displaying the answer on the screen. 
 6. clearing the result. 
+
+
+User enters numbers
+if the decimal is used, it cannot be used again in the array 
+allow 9 digits in the array 
+when an operator is pushed, use boolean to end the first number array
+start counting the second array also following the 1 decimal rule and 9 numbers
+push the 2 numbers and operator into a function 
