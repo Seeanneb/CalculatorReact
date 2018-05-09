@@ -17,52 +17,76 @@ class Calculator extends Component {
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEquate = this.handleEquate.bind(this)
+    this.handleClear = this.handleClear.bind(this)
+    this.handleKeyboard = this.handleKeyboard.bind(this)
   }
     //ADD BOOLEANS EX. FIRSTNUMBERCHOSEN =FALSE, IF OPERATOR CHOSEN, FIRSTNUMBERCHOSEN=TRUE
 
   handleSubmit(event){
     event.preventDefault();
     var value = event.target.value
-    var first = this.state.first
-    var integered = parseInt(value)
-    if ((Number.isInteger(integered) || integered === 0 || value === '.') && this.state.hasFirst === false){
-    first.push(value)
-    this.setState({first: first})
-    } if (value === '+' || value === '-' || value === '*' || value === '/') {
-        this.setState({operator: value, hasOperator: true, hasFirst: true})
-        console.log(this.state)  
+    var first = parseInt(value, 10)
+    var firstArr = this.state.first.map(x => parseInt(x, 10))
+    if (( Number.isInteger(first) || value === '0' || value === '.') && this.state.hasFirst === false){
+     firstArr.push(first)
+     firstArr.reduce((a, b) => a + b)
+    console.log('after push ' + firstArr)
+    this.setState({first: firstArr})
+
+    } else if (value === '+' || value === '-' || value === '*' || value === '/') {
+        this.setState({operator: value, hasOperator: true, hasFirst: true, first: firstArr})
+         
     } else if (this.state.hasFirst === true && this.state.hasOperator === true) {
-      var second = this.state.second
-      if (Number.isInteger(integered) || integered === 0 || value === '.'){
-        second.push(value)
-        this.setState({second: second})
+      var second = parseInt(value, 10)
+      var secondArr = []
+      if (Number.isInteger(second) || second === 0 || value === '.'){
+        secondArr.push(second)
+        this.setState({second: secondArr})
       }
     }
   }
 
   handleEquate(a, x, b, e){
-    e.preventDefault()
-    console.log(typeof a) 
-      if (x == '-'){
-      this.setState({answer: parseInt(a) - parseInt(b)})
-    } else if ( x == '+'){
-      this.setState({answer: parseInt(a) + parseInt(b)})
-    } else if ( x == '*'){
-      this.setState({answer: parseInt(a) * parseInt(b)})
-    }else if ( x == '/'){
-      this.setState({answer: parseInt(a) / parseInt(b)})
-    }
-    // e.preventDefault()
-    // this.setState({answer: parseInt(a + x + b)})
-    // console.log(typeof 1 / 1)
     
+    e.preventDefault()
+    
+      if (x === '-'){
+      this.setState({answer: parseInt(a, 10) - parseInt(b, 10)})
+    } else if ( x === '+'){
+      this.setState({answer: parseInt(a, 10) + parseInt(b, 10)})
+    } else if ( x === '*'){
+      this.setState({answer: parseInt(a, 10) * parseInt(b, 10)})
+    }else if ( x === '/'){
+      this.setState({answer: parseInt(a, 10) / parseInt(b, 10)})
+    }
   }
   
+   handleClear(event){
+    event.preventDefault();
+    this.setState({
+      answer: '',
+      first: [],
+      operator: ' ',
+      second: [],
+      hasFirst: false,
+      hasOperator: false,
+      hasSecond: false,
+      hasDecimal: false
+    })
+  }
+
+  handleKeyboard(event){
+    var value = event.keyCode;
+    console.log(value)
+  }
+
   render() {
     
     return (
       <div className="App">
-        
+          <form>
+            <button className='clear' onClick={this.handleClear}>Clear</button>
+          </form>
          <div className='container'>
          <form>
           <div >
@@ -101,3 +125,17 @@ class Calculator extends Component {
 }
 
 export default Calculator;
+
+//
+// if this.state.first.includes('.'){
+//  this.setState({hasDecimal === true})
+//}
+// 
+//
+//
+//array.map into the handle equate parseInt
+//
+//
+//
+
+
