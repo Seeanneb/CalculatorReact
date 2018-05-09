@@ -18,7 +18,6 @@ class Calculator extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleEquate = this.handleEquate.bind(this)
     this.handleClear = this.handleClear.bind(this)
-    this.handleKeyboard = this.handleKeyboard.bind(this)
   }
     //ADD BOOLEANS EX. FIRSTNUMBERCHOSEN =FALSE, IF OPERATOR CHOSEN, FIRSTNUMBERCHOSEN=TRUE
 
@@ -26,19 +25,19 @@ class Calculator extends Component {
     event.preventDefault();
     var value = event.target.value
     var first = parseInt(value, 10)
-    var firstArr = this.state.first.map(x => parseInt(x, 10))
-    if (( Number.isInteger(first) || value === '0' || value === '.') && this.state.hasFirst === false){
+    var firstArr = [...this.state.first]
+     if (( Number.isInteger(first) || value === '0' || value === '.') && this.state.hasFirst === false){
      firstArr.push(first)
-     firstArr.reduce((a, b) => a + b)
-    console.log('after push ' + firstArr)
     this.setState({first: firstArr})
 
     } else if (value === '+' || value === '-' || value === '*' || value === '/') {
+        firstArr.reduce((a, b) =>  a + b)
+        console.log('after push ' + firstArr)
         this.setState({operator: value, hasOperator: true, hasFirst: true, first: firstArr})
          
     } else if (this.state.hasFirst === true && this.state.hasOperator === true) {
       var second = parseInt(value, 10)
-      var secondArr = []
+      var secondArr = [...this.state.second]
       if (Number.isInteger(second) || second === 0 || value === '.'){
         secondArr.push(second)
         this.setState({second: secondArr})
@@ -47,9 +46,13 @@ class Calculator extends Component {
   }
 
   handleEquate(a, x, b, e){
-    
     e.preventDefault()
-    
+
+      a = this.state.first.join('')
+      console.log('first ' + a)
+      b = this.state.second.join('')
+      console.log('second ' + b)
+
       if (x === '-'){
       this.setState({answer: parseInt(a, 10) - parseInt(b, 10)})
     } else if ( x === '+'){
@@ -73,11 +76,6 @@ class Calculator extends Component {
       hasSecond: false,
       hasDecimal: false
     })
-  }
-
-  handleKeyboard(event){
-    var value = event.keyCode;
-    console.log(value)
   }
 
   render() {
@@ -118,7 +116,7 @@ class Calculator extends Component {
              <h4>{this.state.first}</h4>
              <h4>{this.state.operator}</h4>
              <h4>{this.state.second}</h4>
-             <h3>{this.state.answer}</h3>
+             <h3>{this.state.answer.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h3>
          </div>
     );
   }
