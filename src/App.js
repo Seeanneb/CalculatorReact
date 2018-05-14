@@ -22,13 +22,16 @@ class Calculator extends Component {
   }
 
   handleKeyboard(event){
-    var key = event.keyCode
+    var key = event.which
     console.log(key)
   }
 
   handleSubmit(event){
     event.preventDefault();
-    var value = event.target.value
+    
+      console.log(event.key)
+    
+    var value = (event.key || event.target.value)
     var first = parseInt(value, 10)
     var firstArr = [...this.state.first]
     // if (firstArr.includes('.')){
@@ -54,6 +57,7 @@ class Calculator extends Component {
 
   handleEquate(a, x, b, e){
     e.preventDefault()
+    e.keyCode === '13'
       a = this.state.first.join('')
       b = this.state.second.join('')
       var addition = [parseFloat(a, 10), parseFloat(b, 10)].reduce((a, b) => {return a + b})
@@ -84,16 +88,26 @@ class Calculator extends Component {
   }
 
   render() {
-    
+  
+    document.getElementById('enter').addEventListener('onkeypress', function(event){
+      event.preventDefault();
+      if (event.keyCode === 13){
+        (event) => this.handleEquate(this.state.first, this.state.operator, this.state.second, event)
+      }
+    })
+   
     return (
-      <div className="App">
+
+      <div onKeyDown={this.handleSubmit} 
+           className="App" >
+      
           <form>
             <button className='clear' onClick={this.handleClear}>Clear</button>
           </form>
          <div className='container'>
          <form>
           <div >
-           <button onClick={this.handleSubmit} onKeyDown={this.handleKeyboard} value='7'>7</button>
+           <button onClick={this.handleSubmit} value='7'>7</button>
            <button onClick={this.handleSubmit} value='8'>8</button>
            <button onClick={this.handleSubmit} value='9'>9</button>
            <button onClick={this.handleSubmit} value='-'>-</button>
@@ -113,7 +127,9 @@ class Calculator extends Component {
           <div >
            <button onClick={this.handleSubmit} value='0'>0</button>
            <button onClick={this.handleSubmit} value='.'>.</button>
-           <button onClick={(e) => this.handleEquate(this.state.first, this.state.operator, this.state.second, e) } value='='>=</button>
+           <button id={'enter'} onClick={(e) => this.handleEquate(this.state.first, this.state.operator, this.state.second, e) } 
+                   value='='> = 
+                   </button>
            <button onClick={this.handleSubmit} value='/'>/</button>
            </div>
           </form>
